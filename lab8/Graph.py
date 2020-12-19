@@ -144,11 +144,46 @@ class Graph:
         self.list_arc_from_list_adj()
         self.matr_adj_from_list_adj()
 
-    def add_arc(self,vert1, vert2):
-        self.list_arc.append([vert1,vert2])
+    def del_arc(self,vert1,vert2):
+        self.list_arc.remove([vert1,vert2])
         self.list_adj_from_list_arc()
         self.matr_adj_from_list_adj()
         self.matrix_incedent_from_list_arc()
+
+    def del_vert(self,vert):
+        del(self.list_adj[vert])
+        self.matrix_incedent_from_list_arc()
+        self.list_arc_from_list_adj()
+        self.matr_adj_from_list_adj()
+
+    def show(self):
+        print("Матрица смежности")
+        print(self.matrix_adj)
+        print("Матрица инцидентности")
+        print(self.matrix_incidence)
+        print("Cписок дуг")
+        print(self.list_arc)
+        print("Cписок смежности")
+        print(self.list_adj)
+    def DFSUtil(self, v, visited):
+        visited.add(v)
+        for neighbour in self.list_adj[v]:
+            if neighbour not in visited:
+                print(str(v) +"->"+str(neighbour), end=' ')
+
+                self.DFSUtil(neighbour, visited)
+                print(str(neighbour)+'->'+str(v), end=' ')
+
+    def DFS(self, start_vert):
+        visited = set()
+        self.DFSUtil(start_vert, visited)
+
+
+    def add_arc(self,vert1, vert2):
+                self.list_arc.append([vert1,vert2])
+                self.list_adj_from_list_arc()
+                self.matr_adj_from_list_adj()
+                self.matrix_incedent_from_list_arc()
 graph=Graph()
 graph.matrix_adj=[[0,1,0,1],[0,0,1,1], [0,1,0,1],[1,0,1,0]]
 graph.list_arc_from_matr_adj()
@@ -156,7 +191,9 @@ graph.list_adj_from_matix_adj()
 graph.matrix_incedent_from_matix_adj()
 graph.add_vert()
 graph.add_arc(4,1)
+graph.show()
 g.add_edges_from(graph.list_arc)
 
-draw(g)
+print(graph.DFS(4))
+draw(g, with_labels=True)
 show()
